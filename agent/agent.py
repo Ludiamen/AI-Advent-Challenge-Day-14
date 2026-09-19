@@ -149,7 +149,7 @@ class MemoryAgent:
         self.soft_check = soft_check
 
         self.client = Client(temperature=temperature, max_tokens=max_tokens)
-        база = base_dir or os.getenv("MEMORY_DIR", "память")
+        база = base_dir or os.getenv("MEMORY_DIR", "memory")
         try:
             self.memory = MemoryManager(
                 base_dir=база, user_id=user_id, session=session, client=self.client,
@@ -212,7 +212,7 @@ class MemoryAgent:
     # --- слои ----------------------------------------------------------------
 
     def set_layers(self, layers: set[str]) -> None:
-        """Включает и выключает слои. Этим делается аблация в сравнение.py."""
+        """Включает и выключает слои. Этим делается аблация в compare.py."""
         неизвестные = layers - ALL_LAYERS
         if неизвестные:
             raise AgentError(

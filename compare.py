@@ -17,10 +17,10 @@
 трогает рабочую память проекта и повторяется с одинаковыми начальными данными.
 
 Запуск:
-    python сравнение.py                 # проверки 1-4
-    python сравнение.py --тест 3        # только третья
-    python сравнение.py --модели        # сравнение моделей (в том числе платных)
-    python сравнение.py --в RESULTS.md  # записать отчёт
+    python compare.py                 # проверки 1-4
+    python compare.py --тест 3        # только третья
+    python compare.py --модели        # сравнение моделей (в том числе платных)
+    python compare.py --в RESULTS.md  # записать отчёт
 """
 
 from __future__ import annotations
@@ -640,7 +640,7 @@ def main() -> int:
     else:
         выбранные = [аргументы.test] if аргументы.test else list(проверки)
 
-    корень = tempfile.mkdtemp(prefix="аблация-")
+    корень = tempfile.mkdtemp(prefix="ablation-")
     результаты: list[dict[str, Any]] = []
     сравнение_моделей: dict[str, Any] | None = None
     try:

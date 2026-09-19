@@ -17,9 +17,9 @@
 обычного пути «спросили — получили нарушение — переписали».
 
 Запуск:
-    python инварианты.py                    # все проверки
-    python инварианты.py --модель ds-flash  # на своей модели
-    python инварианты.py --в RESULTS.md     # записать отчёт
+    python check_invariants.py                    # все проверки
+    python check_invariants.py --модель ds-flash  # на своей модели
+    python check_invariants.py --в RESULTS.md     # записать отчёт
 """
 
 from __future__ import annotations
@@ -318,7 +318,7 @@ def main() -> int:
     разбор.add_argument("--в", dest="out", default="", metavar="ПУТЬ")
     аргументы = разбор.parse_args()
 
-    рабочий = tempfile.mkdtemp(prefix="инварианты-")
+    рабочий = tempfile.mkdtemp(prefix="invariants-")
     try:
         конфликты = проверка_конфликтов(рабочий, аргументы.model)
         безобидные = проверка_безобидных(рабочий, аргументы.model)

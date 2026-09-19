@@ -4,18 +4,18 @@
 перечисление синонимов, а подсказка на три разных по природе вещи, которые
 нельзя валить в один файл:
 
-  ПРОФИЛЬ (профиль.json) — кто перед агентом и в каких рамках он работает:
+  ПРОФИЛЬ (profile.json) — кто перед агентом и в каких рамках он работает:
   стиль ответов, ограничения по стеку, зачем всё это нужно, и отдельным
   списком — инварианты. Перезаписывается: у пользователя один текущий профиль,
   история его правок никого не интересует.
 
-  РЕШЕНИЯ (решения.jsonl) — журнал того, что уже решено и почему. Дописывается
+  РЕШЕНИЯ (decisions.jsonl) — журнал того, что уже решено и почему. Дописывается
   и никогда не переписывается: смысл записи «выбрали Django, отклонили Laravel,
   потому что…» именно в том, что через полгода её можно прочитать дословно.
   Формат JSON Lines выбран ради этого — дописать строку в конец файла нельзя
   «наполовину», в отличие от перезаписи целого JSON-массива.
 
-  ЗНАНИЯ (знания.json) — факты предметной области: структура legacy-схем,
+  ЗНАНИЯ (knowledge.json) — факты предметной области: структура legacy-схем,
   имена контроллеров, доменная логика сети. В отличие от решений, знание не
   привязано ко времени и его можно уточнять. В отличие от профиля, знаний
   много, и в промпт они идут не целиком, а отбором по релевантности.
@@ -391,13 +391,13 @@ class LongTermMemory:
         self.user_id = user_id
         self.directory = os.path.join(directory, user_id)
         os.makedirs(self.directory, exist_ok=True)
-        self.profile = ProfileStore(os.path.join(self.directory, "профиль.json"))
-        self.decisions = DecisionsStore(os.path.join(self.directory, "решения.jsonl"))
-        self.knowledge = KnowledgeStore(os.path.join(self.directory, "знания.json"))
+        self.profile = ProfileStore(os.path.join(self.directory, "profile.json"))
+        self.decisions = DecisionsStore(os.path.join(self.directory, "decisions.jsonl"))
+        self.knowledge = KnowledgeStore(os.path.join(self.directory, "knowledge.json"))
         # Сценарии лежат отдельным файлом, а не внутри профиля: профиль целиком
         # уходит в каждый запрос, а сценарий — нет, в промпт идёт только текущий
         # шаг. См. agent/scenarios.py.
-        self.scenarios = ScenarioStore(os.path.join(self.directory, "сценарии.json"))
+        self.scenarios = ScenarioStore(os.path.join(self.directory, "scenarios.json"))
 
     def stats(self) -> dict[str, Any]:
         профиль = self.profile.load()

@@ -10,7 +10,7 @@
 //   1) поднять сервер:   MEMORY_DIR=/tmp/проба PORT=5000 python web.py
 //   2) поднять браузер:  google-chrome --headless=new --remote-debugging-port=9222 \
 //                          --no-sandbox --disable-gpu about:blank
-//   3) сам прогон:       node браузер.mjs [адрес] [ключ-модели] [запрос] [режим]
+//   3) сам прогон:       node browser.mjs [адрес] [ключ-модели] [запрос] [режим]
 //
 // Режимы:
 //   сценарий (по умолчанию) — запустить сценарий по триггеру и дождаться конца;

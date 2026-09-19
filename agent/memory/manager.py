@@ -20,7 +20,7 @@
                       предложение исполняется только выше порога уверенности.
 
 Каждая запись — и применённая, и отклонённая — попадает в журнал маршрутизации
-(маршрутизация.jsonl). Это и есть прямой ответ на вопрос задания «какие данные
+(routing.jsonl). Это и есть прямой ответ на вопрос задания «какие данные
 попадают в каждый слой»: журнал читается глазами и не требует веры на слово.
 
 Публичное API:
@@ -62,7 +62,7 @@ ASK = "спросить"     # только предлагать; решение
 OFF = "выкл"         # не звать маршрутизатор вообще
 ROUTER_MODES = (AUTO, ASK, OFF)
 
-DEFAULT_DIR = os.getenv("MEMORY_DIR", "память")
+DEFAULT_DIR = os.getenv("MEMORY_DIR", "memory")
 
 
 def _now() -> str:
@@ -99,16 +99,16 @@ class MemoryManager:
         # быстро дописываться и так же быстро стираться, состояние задачи —
         # переживать очистку диалога, а профиль и знания — читаться глазами и
         # править руками. Один общий файл не даёт ни того, ни другого, ни третьего.
-        self.short = ShortTermMemory(os.path.join(base_dir, "диалог.db"))
-        self.working = WorkingMemory(os.path.join(base_dir, "рабочая"))
-        self.long = LongTermMemory(os.path.join(base_dir, "долго"), user_id)
+        self.short = ShortTermMemory(os.path.join(base_dir, "dialog.db"))
+        self.working = WorkingMemory(os.path.join(base_dir, "working"))
+        self.long = LongTermMemory(os.path.join(base_dir, "long"), user_id)
 
         # Инварианты проекта лежат отдельным файлом на уровне всей памяти, а не
         # в профиле пользователя. Профиль принадлежит человеку, инварианты —
         # проекту: переключение «--кто» не должно менять то, что запрещено.
-        self.invariants = InvariantStore(os.path.join(base_dir, "инварианты.json"))
+        self.invariants = InvariantStore(os.path.join(base_dir, "invariants.json"))
 
-        self.journal_path = os.path.join(base_dir, "маршрутизация.jsonl")
+        self.journal_path = os.path.join(base_dir, "routing.jsonl")
         self.router = (
             Router(client, model_key=router_model, threshold=threshold)
             if client is not None else None
