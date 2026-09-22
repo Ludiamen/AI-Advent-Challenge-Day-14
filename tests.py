@@ -1949,8 +1949,14 @@ class ЛимитыПровайдера(unittest.TestCase):
                 "message": "Rate limit reached on tokens per day (TPD): Limit 200000"}})
 
         клиент._http = httpx.Client(transport=httpx.MockTransport(ответ))
+        # Ключ нужен только для того, чтобы запрос дошёл до заглушки: без него
+        # вызов обрывается раньше HTTP. Тест не должен зависеть от .env —
+        # в свежем клоне его нет, и тест падал на «0 попыток».
+        from unittest import mock
+        модель = catalog.get("groq-120b")
         try:
-            with self.assertRaises(LLMError) as поймано:
+            with mock.patch.dict(os.environ, {модель.env_var: "test-key"}), \
+                    self.assertRaises(LLMError) as поймано:
                 клиент.call("groq-120b", [{"role": "user", "content": "привет"}])
             self.assertEqual(попыток["счёт"], 1, "суточный лимит ушёл в повторы")
             self.assertIn("завтра", str(поймано.exception))
